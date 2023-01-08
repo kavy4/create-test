@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 
-const QuizInput = ({index}) => {
+const QuizInput = ({index, ResultFunction}) => {
   const quizSessionStorage = `question${index}`
 
   if (!sessionStorage.getItem(quizSessionStorage)) {
@@ -17,10 +17,12 @@ const QuizInput = ({index}) => {
     if (setState == 'setQuestion') {
       setQuestion(event)
       sessionStorage.setItem(quizSessionStorage, JSON.stringify({ id: quizSessionStorageBody.id, question: event, answer: answer }))
+      ResultFunction({ type: 'user-input', title: event, correct: answer }, index)
     }
     else {
       setAnswer(event)
       sessionStorage.setItem(quizSessionStorage, JSON.stringify({ id: quizSessionStorageBody.id, question: question, answer: event }))
+      ResultFunction({ type: 'user-input', title: question, correct: event }, index)
     }
   }
 
